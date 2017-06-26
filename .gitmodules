@@ -1,0 +1,3 @@
+[submodule "course_samples/auth_vs_auth/OAuth2.0"]
+	path = course_samples/auth_vs_auth/OAuth2.0
+	url = git@github.com:em-torres/OAuth2.0.git

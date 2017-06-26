@@ -76,3 +76,12 @@ dist/
 
 # End of https://www.gitignore.io/api/grunt
 .vagrant
+
+# Python
+*.pyc
+
+# Database
+*.db
+
+# Json Files
+*.json
