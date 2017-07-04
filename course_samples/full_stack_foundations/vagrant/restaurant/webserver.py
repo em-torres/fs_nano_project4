@@ -1,14 +1,31 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
+from constants import Paths
+from helpers import read_file
 
 
 class WebServerHandler(BaseHTTPRequestHandler):
+    header = {
+        'keyword': 'Content-type',
+        'value': 'text/html'
+    }
+
+    def _send_response_and_header(self, response, header):
+        """ Receive a response integer value and a header dictionary to set the response and headers of the service """
+        self.send_response(response)
+        self.send_header(header['keyword'], header['value'])
+        self.end_headers()
+
     def do_GET(self):
         try:
+            if self.path.endswith("/restaurants"):
+                self._send_response_and_header(200, self.header)
+                output = read_file(Paths.TEMPLATE_RESTAURANT) % "tesla"
+                self.wfile.write(output)
+                return
+
             if self.path.endswith("/hello"):
-                self.send_response(200)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
+                self._send_response_and_header(200, self.header)
 
                 output = "<html><body>Hello!"
                 output += "<form method='POST' enctype='multipart/form-data' action='/hello'>"
@@ -18,10 +35,9 @@ class WebServerHandler(BaseHTTPRequestHandler):
                 output += "</body></html>"
                 self.wfile.write(output)
                 return
+
             if self.path.endswith("/hola"):
-                self.send_response(200)
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
+                self._send_response_and_header(200, self.header)
 
                 output = "<html><body>&#161Hola! <a href='/hello'>Back to Hello</a>"
                 output += "<form method='POST' enctype='multipart/form-data' action='/hello'>"
